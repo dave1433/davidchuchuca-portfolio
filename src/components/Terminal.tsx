@@ -45,36 +45,62 @@ function run(raw: string): string[] {
   }
 }
 
+const HACK_SEQUENCE = [
+  "initiating breach sequence...",
+  "scanning ports 22, 80, 443, 8080...",
+  "bypassing firewall... [########..] 82%",
+  "cracking password hash... 7a3f9c2e",
+  "access: ",
+  "",
+  "...just kidding. nice try though.",
+  "(no systems were harmed in the making of this joke)",
+];
+
 export default function Terminal() {
   const [open, setOpen] = useState(false);
   const [lines, setLines] = useState<Line[]>([
     { type: "output", text: `Welcome. Type "help" to see what this does.` },
   ]);
   const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
+    if (open && !busy) inputRef.current?.focus();
+  }, [open, busy]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [lines]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const result = run(input);
+    if (busy) return;
+    const cmd = input.trim().toLowerCase();
+    setInput("");
+
+    if (cmd === "hack") {
+      setLines((prev) => [...prev, { type: "input", text: cmd }]);
+      setBusy(true);
+      for (const text of HACK_SEQUENCE) {
+        await new Promise((resolve) => setTimeout(resolve, 380));
+        setLines((prev) => [...prev, { type: "output", text }]);
+      }
+      setBusy(false);
+      return;
+    }
+
+    const result = run(cmd);
     if (result[0] === "__CLEAR__") {
       setLines([]);
     } else {
       setLines((prev) => [
         ...prev,
-        { type: "input", text: input },
+        { type: "input", text: cmd },
         ...result.map((text) => ({ type: "output" as const, text })),
       ]);
     }
-    setInput("");
   }
 
   return (
@@ -122,8 +148,9 @@ export default function Terminal() {
                 onChange={(e) => setInput(e.target.value)}
                 autoComplete="off"
                 spellCheck={false}
-                className="flex-1 bg-transparent outline-none text-white placeholder:text-white/30"
-                placeholder="type help"
+                disabled={busy}
+                className="flex-1 bg-transparent outline-none text-white placeholder:text-white/30 disabled:opacity-40"
+                placeholder={busy ? "" : "type help"}
               />
             </form>
           </motion.div>
