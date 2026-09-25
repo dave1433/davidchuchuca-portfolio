@@ -18,8 +18,9 @@ export default function Contact() {
         <p className="font-mono text-sm text-accent mb-2">05 · contact</p>
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">Let&apos;s talk</h2>
         <p className="text-muted max-w-md mx-auto mb-10">
-          Looking for candidates for an IT internship starting August 2026? Or just want to say
-          hi — my inbox is open.
+          Currently interning at Mass IT and applying for a software development top-up degree.
+          Open to chatting about opportunities down the line — or just want to say hi? My inbox
+          is open.
         </p>
 
         <a
