@@ -74,6 +74,11 @@ export default function Terminal() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [lines]);
 
+  const MAX_LINES = 300;
+  function appendLines(next: Line[]) {
+    setLines((prev) => [...prev, ...next].slice(-MAX_LINES));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (busy) return;
@@ -81,11 +86,11 @@ export default function Terminal() {
     setInput("");
 
     if (cmd === "hack") {
-      setLines((prev) => [...prev, { type: "input", text: cmd }]);
+      appendLines([{ type: "input", text: cmd }]);
       setBusy(true);
       for (const text of HACK_SEQUENCE) {
         await new Promise((resolve) => setTimeout(resolve, 380));
-        setLines((prev) => [...prev, { type: "output", text }]);
+        appendLines([{ type: "output", text }]);
       }
       setBusy(false);
       return;
@@ -95,8 +100,7 @@ export default function Terminal() {
     if (result[0] === "__CLEAR__") {
       setLines([]);
     } else {
-      setLines((prev) => [
-        ...prev,
+      appendLines([
         { type: "input", text: cmd },
         ...result.map((text) => ({ type: "output" as const, text })),
       ]);
@@ -148,6 +152,7 @@ export default function Terminal() {
                 onChange={(e) => setInput(e.target.value)}
                 autoComplete="off"
                 spellCheck={false}
+                maxLength={200}
                 disabled={busy}
                 className="flex-1 bg-transparent outline-none text-white placeholder:text-white/30 disabled:opacity-40"
                 placeholder={busy ? "" : "type help"}
