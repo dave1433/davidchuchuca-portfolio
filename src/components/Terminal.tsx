@@ -30,6 +30,12 @@ function run(raw: string): string[] {
       return [`email: ${profile.email}`, `github: ${profile.socials.github}`, `linkedin: ${profile.socials.linkedin}`];
     case "sudo":
       return ["nice try. permission denied."];
+    case "cat":
+      return [
+        " /\\_/\\",
+        "( o.o )  meow.",
+        " > ^ <",
+      ];
     case "clear":
       return ["__CLEAR__"];
     case "":
@@ -100,7 +106,10 @@ export default function Terminal() {
             </div>
             <div ref={scrollRef} className="h-56 overflow-y-auto px-3 py-3 space-y-1">
               {lines.map((line, i) => (
-                <div key={i} className={line.type === "input" ? "text-white" : "text-green-400"}>
+                <div
+                  key={i}
+                  className={`whitespace-pre ${line.type === "input" ? "text-white" : "text-green-400"}`}
+                >
                   {line.type === "input" ? `$ ${line.text}` : line.text}
                 </div>
               ))}
