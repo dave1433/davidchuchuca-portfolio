@@ -122,16 +122,6 @@ export const experience: ExperienceItem[] = [
   },
 ];
 
-// Non-tech work experience from the CV — shows range, work ethic, and
-// experience operating under pressure in team environments. Kept separate
-// from the timeline above since it's not dev experience.
-export const otherExperience = [
-  { role: "Frontliner", org: "HomeRun, Esbjerg, Denmark", period: "Nov 2025 — Present" },
-  { role: "Frontliner", org: "Proud Mary Pub, Copenhagen, Denmark", period: "Feb 2023 — 2025" },
-  { role: "Bartender", org: "Roskilde Festival", period: "June 2024" },
-  { role: "Crew Member", org: "SSP UK & Ireland – Burger King, Dublin Airport", period: "Apr 2022 — Jun 2022" },
-];
-
 export const languages = [
   { name: "Spanish", level: "Native" },
   { name: "English", level: "Fluent" },

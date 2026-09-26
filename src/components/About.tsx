@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, GraduationCap, Languages } from "lucide-react";
-import { profile, languages, otherExperience } from "@/data/portfolio";
+import { profile, languages } from "@/data/portfolio";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -60,22 +60,6 @@ export default function About() {
             label="Languages"
             value={languages.map((l) => l.name).join(" · ")}
           />
-
-          <div className="pt-2 border-t border-border">
-            <p className="text-xs uppercase tracking-wider text-muted mt-4 mb-2">
-              Also on the resume
-            </p>
-            <ul className="space-y-1.5 text-sm text-muted">
-              {otherExperience.map((e) => (
-                <li key={`${e.role}-${e.org}`} className="flex justify-between gap-3">
-                  <span>
-                    {e.role} · {e.org}
-                  </span>
-                  <span className="whitespace-nowrap">{e.period}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </motion.div>
       </div>
     </section>
